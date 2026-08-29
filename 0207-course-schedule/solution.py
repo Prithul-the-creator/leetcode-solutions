@@ -5,25 +5,26 @@ class Solution:
             adj[course].append(pre)
         
         visited = set()
-        result = True
-        def dfs(course, path):
-            nonlocal result
-            if course in path:
-                result = False
-                return
-            if course not in adj or course in visited:
-                return
 
-            path.add(course)
-            for i in range(len(adj[course])):
-                dfs(adj[course][i], path)
-            path.remove(course)
+        def dfs(course):
+
+            if course in visited:
+                return False
+            if course not in adj:
+                return True
+
             visited.add(course)
+            for i in range(len(adj[course])):
+                if not dfs(adj[course][i]):
+                    return False
+            visited.remove(course)
+            adj[course] = []
+            return True
         
         for course in adj:
-            dfs(course, set())
+            if not dfs(course): return False
         
-        return result
+        return True
             
 
 
